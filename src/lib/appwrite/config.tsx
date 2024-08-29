@@ -1,8 +1,8 @@
 import {Client, Account, Databases, Storage, Avatars} from "appwrite"
 
 export const appwriteConfig = {
-    projectID: import.meta.env.INVITE_APP_APPWRITE_PROJECT_ID,
-    url: import.meta.env.INVITE_APP_APPWRITE_URL,
+    projectID: '66c0cb73002023859483',
+    url: 'https://cloud.appwrite.io/v1',
     
 
 }

@@ -33,13 +33,14 @@ const SignUp = () => {
       resolver: zodResolver(SignUpValidation),
       defaultValues: {
         username: "",
+        email: "",
         password: ""
       },
     })
    
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof SignUpValidation>) {
-      const newUser = await createUserAccount()
+      const newUser = await createUserAccount(values)
 
       console.log(newUser)
     
@@ -64,6 +65,21 @@ const SignUp = () => {
           <FormField
             control={form.control}
             name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input type="text" className="shad-input" {...field} />
+                </FormControl>
+                
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>
