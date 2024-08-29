@@ -4,19 +4,19 @@ import { account } from './config';
 
 export async function createUserAccount(user: INewUser){
 
-    try{
-        const newAccount = await account.create (
-            ID.unique(),
-            user.username,
-            user.password
-        )
+    // try{
+    //     const newAccount = await account.create (
+    //         ID.unique(),
+    //         user.username,
+    //         user.password
+    //     )
 
-        return newAccount
+    //     return newAccount
 
 
-    } catch(error){
-        console.log(error);
-        return error;
-    }
+    // } catch(error){
+    //     console.log(error);
+    //     return error;
+    // }
     
 }
