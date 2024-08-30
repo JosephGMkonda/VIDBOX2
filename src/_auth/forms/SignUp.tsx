@@ -40,6 +40,7 @@ const SignUp = () => {
    
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof SignUpValidation>) {
+      console.log(values);
       const newUser = await createUserAccount(values)
 
       console.log(newUser)
@@ -62,24 +63,12 @@ const SignUp = () => {
             To use VIDBOX, please enter your details here</p>
         
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 w-full mt-4">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input type="text" className="shad-input" {...field} />
-                </FormControl>
-                
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
+      
 
           <FormField
             control={form.control}
-            name="email"
+            name="username"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>
@@ -91,6 +80,22 @@ const SignUp = () => {
               </FormItem>
             )}
           />
+
+<FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="shad-form_label">Email</FormLabel>
+                <FormControl>
+                  <Input type="text" className="shad-input" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+        
 
           <FormField
             control={form.control}

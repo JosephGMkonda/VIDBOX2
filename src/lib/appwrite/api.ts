@@ -8,9 +8,8 @@ export async function createUserAccount(user: INewUser){
         const newAccount = await account.create (
             ID.unique(),
             user.email,
-            user.username,
-           
-            user.password
+            user.password,
+            user.username
         )
 
         return newAccount
