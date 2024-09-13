@@ -17,10 +17,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { SignUpValidation } from "@/lib/validation"
 import Loader from "@/components/shared/Loader"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 import { useToast } from "@/components/ui/use-toast"
 import { useCreateUserAccountMutation , useSignInAccount} from "@/lib/react-query/queriesandMuntations"
+import { useUserContext } from "@/context/AuthContext"
 
  
 
@@ -29,6 +30,9 @@ import { useCreateUserAccountMutation , useSignInAccount} from "@/lib/react-quer
 
 const SignUp = () => {
   const { toast } = useToast()
+  const {checkAuthUser, isLoading: isUserLoading} = useUserContext();
+  const navigate = useNavigate();
+
   
   const {mutateAsync: createUserAccount, isLoading: isCreatingAccount } = useCreateUserAccountMutationntMutation()
   const {mutateAsync: signInAccount, isLoading: isSigningIn} = useSignInAccount();
@@ -63,6 +67,14 @@ const SignUp = () => {
       if(!session){
         return toast({title: 'sign in failed. Please try again.'})
 
+      }
+      const isLoggedIn = await checkAuthUser();
+
+      if(isLoggedIn){
+        form.reset();
+        navigate('/')
+      }else{
+        return toast({ title: "Sign up failed. Please try again."})
       }
     
       
