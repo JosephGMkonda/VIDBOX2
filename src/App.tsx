@@ -8,6 +8,8 @@ import RootLayout from './_root/RootLayout'
 
 import Layout from './_auth/Layout'
 import { Home } from './_root/pages';
+import { Toaster } from "@/components/ui/toaster"
+
 
 
 
@@ -29,6 +31,8 @@ const App = () => {
         <Route index element={<Home/>}/>
         </Route>
     </Routes>
+
+    <Toaster />
     </main>
    
   )

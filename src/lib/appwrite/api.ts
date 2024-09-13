@@ -1,6 +1,9 @@
 import {ID} from 'appwrite'
+import { Query } from 'appwrite'; 
+import { account, databases, appwriteConfig } from './config';
 import { INewUser } from "@/types";
 import { account, appwriteConfig, avatar, databases } from './config';
+
 
 export async function createUserAccount(user: INewUser){
 
@@ -61,3 +64,59 @@ export async function saveUserToDB(user: {
     username: string;
 
 })
+
+
+
+
+export async function SignInAccount(user: {username: string; password: string}) {
+
+    try {
+
+        const userEmailquery = await databases.listDocuments(
+            appwriteConfig.database,
+            appwriteConfig.users,
+            [Query.equal('username', username)]
+        );
+
+        if(userEmailquery.documents.length === 0){
+            throw new Error('No user found with that username');
+        }
+
+        const userEmail = userEmailQuery.documents[0].email;
+
+        const session = await account.createSession(userEmail, user.password);
+        console.log('Login successful', session);
+
+        return session;
+
+
+        
+    } catch (error) {
+        
+        console.log(error)
+    }
+    
+}
+
+export async function getCurrentAccount(){
+    try {
+
+        const currentAccount = await account.get();
+        if(!currentAccount) throw Error;
+
+        const currentUser = await databases.listDocuments(
+            appwriteConfig.database,
+            appwriteConfig.users,
+            [Query.equal('accountId', currentAccount.$id)]
+
+
+        )
+
+        if(!currentUser) throw Error;
+        
+        return currentUser.documents[0];
+    } catch (error) {
+        console.log(error)
+        
+    }
+}
