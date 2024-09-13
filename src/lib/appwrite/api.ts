@@ -2,7 +2,7 @@ import {ID} from 'appwrite'
 import { Query } from 'appwrite'; 
 import { account, databases, appwriteConfig } from './config';
 import { INewUser } from "@/types";
-import { account, appwriteConfig, avatar, databases } from './config';
+
 
 
 export async function createUserAccount(user: INewUser){
@@ -15,42 +15,24 @@ export async function createUserAccount(user: INewUser){
             user.username
         )
 
-        return newAccount
+        
 
-        if(!newAccount) throw error;
+        if (!newAccount) throw new Error('Account creation failed');
         const avatarURL = avatar.getInitials(user.username);
 
-        const user = {
+        const newUser = {
             accountId: newAccount.$id,
-            
             email: newAccount.email,
             username: newAccount.username,
             imageUrl: avatarURL
 
         }
 
-        const newUser = await saveUserToDB(user);
+        const savedUser = await saveUserToDB(newUser);
+        return savedUser;
         
-            try{
-
-                const newUser = await databases.createDocument(
-                    appwriteConfig.database,
-                    appwriteConfig.users,
-                    ID.unique(),
-                    user,
-                )
-                return newUser;
-
-            }catch(error){
-                console.log(error);
-                return error
-            }
-        
-
-
-
-
-    } catch(error){
+            
+        } catch(error){
         console.log(error);
         return error;
     }
@@ -63,7 +45,24 @@ export async function saveUserToDB(user: {
     imageUrl: URL;
     username: string;
 
-})
+
+
+}){
+    try{
+
+        const newUser = await databases.createDocument(
+            appwriteConfig.database,
+            appwriteConfig.users,
+            ID.unique(),
+            user,
+        )
+        return newUser;
+
+    }catch(error){
+        console.log(error);
+        return error
+    }
+}
 
 
 
@@ -75,14 +74,15 @@ export async function SignInAccount(user: {username: string; password: string}) 
         const userEmailquery = await databases.listDocuments(
             appwriteConfig.database,
             appwriteConfig.users,
-            [Query.equal('username', username)]
+            [Query.equal('username', user.username)]
         );
 
-        if(userEmailquery.documents.length === 0){
+        if (userEmailquery.documents.length === 0) {
             throw new Error('No user found with that username');
         }
-
-        const userEmail = userEmailQuery.documents[0].email;
+        
+        const userEmail = userEmailquery.documents[0].email;
+        
 
         const session = await account.createSession(userEmail, user.password);
         console.log('Login successful', session);
