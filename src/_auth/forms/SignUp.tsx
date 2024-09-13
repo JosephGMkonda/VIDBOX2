@@ -34,7 +34,8 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   
-  const {mutateAsync: createUserAccount, isLoading: isCreatingAccount } = useCreateUserAccountMutationntMutation()
+  const {mutateAsync: createUserAccount, isLoading: isCreatingAccount } = useCreateUserAccountMutation();
+
   const {mutateAsync: signInAccount, isLoading: isSigningIn} = useSignInAccount();
 
     // 1. Define  form.
