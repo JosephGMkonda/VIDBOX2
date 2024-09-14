@@ -50,8 +50,10 @@ const SignUp = () => {
    
     // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof SignUpValidation>) {
-      console.log(values);
+      
       const newUser = await createUserAccount(values)
+
+      console.log("newUser:", newUser)
 
       if (!newUser){
        return  toast({
@@ -64,13 +66,13 @@ const SignUp = () => {
         password: values.password,
 
       })
-
+      console.log("Session:", session);
       if(!session){
         return toast({title: 'sign in failed. Please try again.'})
 
       }
       const isLoggedIn = await checkAuthUser();
-
+      console.log("isLoggedIn: " ,isLoggedIn)
       if(isLoggedIn){
         form.reset();
         navigate('/')
@@ -115,7 +117,7 @@ const SignUp = () => {
             )}
           />
 
-<FormField
+           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
